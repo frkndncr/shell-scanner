@@ -26,11 +26,11 @@ fi
 
  echo "[✔] Installing ...";
  echo "";
- git clone https://github.com/Manisso/Xshell.git $refdir/Xshell;
+ git clone https://github.com/B3zkurt/wordpress-shell-scanner/ $refdir/wordpress-shell-scanner;
  echo "#!/bin/bash 
- perl $refdir/Xshell/Xshell.pl" '${1+"$@"}' > xshell;
- chmod +x xshell;
- sudo cp xshell /usr/bin/;
+ perl $refdir/ordpress-shell-scanner/ordpress-shell-scanner.pl" '${1+"$@"}' > xshell;
+ chmod +x wordpress-shell-scanner;
+ sudo cp wordpress-shell-scanner /usr/bin/;
  rm xshell;
 
 
