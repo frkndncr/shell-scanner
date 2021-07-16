@@ -1,1 +1,1 @@
-# Wordpress Shell Scanner
+# Shell Scanner
