@@ -17,7 +17,7 @@ system('clear');
 system('cls');
 
 print "\n";
-print $c[9]. " B3zkurt Wordpress Dork tarayıcı ";
+print $c[9]. " B3zkurt Shell Scanner ";
 print "\n";
 print $c[9]. "Örnek: www.google.com ";
 print "\n";
