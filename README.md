@@ -41,16 +41,6 @@ cd shell-scanner
 chmod +x shell-scanner.pl
 ```
 
-### Otomatik Kurulum (Linux)
-
-```bash
-# install.sh dosyasını çalıştırılabilir yapın
-chmod +x install.sh
-
-# Kurulum betiğini çalıştırın
-./install.sh
-```
-
 ## 🚀 Kullanım
 
 ```bash
