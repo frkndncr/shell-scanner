@@ -1,37 +1,61 @@
 #!/usr/bin/perl
-
+use strict;
+use warnings;
 use HTTP::Request;
 use LWP::UserAgent;
 use Term::ANSIColor;
+use Time::HiRes qw(gettimeofday tv_interval);
+use URI;
 
-system('clear');
-system('clear');
-system('clear');
-system('clear');
-system('clear');
-system('clear');
-system('clear');
-system('clear');
-system('clear');
-system('clear');
-system('cls');
+# Renk dizisi
+my @c = ("\033[0;30m", "\033[1;30m", "\033[0;31m", "\033[1;31m", "\033[0;32m", "\033[1;32m", "\033[0;33m", "\033[1;33m", "\033[0;34m", "\033[1;34m", "\033[0;35m", "\033[1;35m", "\033[0;36m", "\033[1;36m", "\033[0;37m", "\033[1;37m", "\033[0m");
 
-print "\n";
-print $c[9]. " B3zkurt Shell Scanner ";
-print "\n";
-print $c[9]. "Örnek: www.google.com ";
-print "\n";
-print "\n";
-print $c[5]. " -> ";
+# Ekranı temizle
+system('clear || cls');
 
-$site=<STDIN>;
+# Banner
+print "\n" . $c[5] . "╔═══════════════════════════════════════════╗\n";
+print $c[5] . "║            SHELL SCANNER v2.1             ║\n";
+print $c[5] . "║          Web Shell Tarama Aracı           ║\n";
+print $c[5] . "╚═══════════════════════════════════════════╝\n";
+print "\n" . $c[9] . "Örnek: www.example.com veya http://example.com\n\n";
+print $c[5] . " -> ";
+
+# Kullanıcıdan giriş al
+my $site = <STDIN>;
 chomp $site;
 
-if($site !~ /http:\/\//) { $site = "http://$site/"; };
+# URL doğrulama
+my $uri = URI->new($site);
+if (!$uri->scheme || !$uri->host) { die "Geçersiz URL: $site\n"; }
+if ($uri->scheme ne 'http' && $uri->scheme ne 'https') { die "Sadece HTTP ve HTTPS şemaları destekleniyor.\n"; }
+$site = $uri->as_string;
+$site .= "/" unless $site =~ /\/$/;
 
-{print $c[2]. "\n";}
+# Tarama ayarları
+print $c[6] . "\n[?] Bağlantı zaman aşımı (saniye) [varsayılan: 10]: ";
+my $timeout = <STDIN>;
+chomp $timeout;
+$timeout = 10 if $timeout eq '' || $timeout <= 0;
 
-@path = ('WSO.php','alfav4.1-tesla.php','k2.php','who1.php','config.php','dz.php','mailer.php','promailer.php','hexor.php','hb.php','fuck.php','xz.php','CaZaNoVa163.php','w.php','wp-content/plugins/akismet/akismet.php','images/stories/w.php','w.php','shell.php','cpanel.php','cpn.php','sql.php','mysql.php','config.php','configuration.php','madspot.php','Cgishell.pl','killer.php','changeall.php','2.php','Sh3ll.php','dz0.php','dam.php','user.php','dom.php','whmcs.php','r00t.php','1.php','a.php','r0k.php','abc.php','egy.php','syrian_shell.php','xxx.php','settings.php','tmp.php','cyber.php','c99.php','r57.php','404.php','gaza.php','1.php','d4rk.php','index1.php','nkr.php','xd.php','M4r0c.php','Dz.php','sniper.php','ksa.php','v4team.php','offline.php','priv8.php','911.php','madspotshell.php','c100.php','sym.php','cp.php','tmp/cpn.php','tmp/w.php','tmp/r57.php','tmp/king.php','tmp/sok.php','tmp/ss.php','tmp/as.php','tmp/dz.php','tmp/r1z.php','tmp/whmcs.php','tmp/root.php','tmp/r00t.php','templates/beez/index.php','templates/beez/beez.php','templates/rhuk_milkyway/index.php','tmp/uploads.php','tmp/upload.php','tmp/sa.php','sa.php','readme.php','tmp/readme.php','wp.zip'.'wp-content/plugins/disqus-comment-system/disqus.php',
+print $c[6] . "[?] Bulunan shell'leri dosyaya kaydet? [Y/n]: ";
+my $save_option = <STDIN>;
+chomp $save_option;
+my $save_file = '';
+if ($save_option =~ /^[Yy]/) {
+    print $c[6] . "[?] Dosya adı [varsayılan: shells_found.txt]: ";
+    $save_file = <STDIN>;
+    chomp $save_file;
+    $save_file = "shells_found.txt" if $save_file eq '';
+}
+
+# İşlem başlangıç mesajı
+print $c[3] . "\n[*] Tarama başlatılıyor: $site\n";
+print $c[3] . "[*] Zaman aşımı: $timeout saniye\n";
+print $c[3] . "[*] Lütfen bekleyin...\n\n";
+
+# Shell yolları
+my @path = ('WSO.php','alfav4.1-tesla.php','k2.php','who1.php','config.php','dz.php','mailer.php','promailer.php','hexor.php','hb.php','fuck.php','xz.php','CaZaNoVa163.php','w.php','wp-content/plugins/akismet/akismet.php','images/stories/w.php','w.php','shell.php','cpanel.php','cpn.php','sql.php','mysql.php','config.php','configuration.php','madspot.php','Cgishell.pl','killer.php','changeall.php','2.php','Sh3ll.php','dz0.php','dam.php','user.php','dom.php','whmcs.php','r00t.php','1.php','a.php','r0k.php','abc.php','egy.php','syrian_shell.php','xxx.php','settings.php','tmp.php','cyber.php','c99.php','r57.php','404.php','gaza.php','1.php','d4rk.php','index1.php','nkr.php','xd.php','M4r0c.php','Dz.php','sniper.php','ksa.php','v4team.php','offline.php','priv8.php','911.php','madspotshell.php','c100.php','sym.php','cp.php','tmp/cpn.php','tmp/w.php','tmp/r57.php','tmp/king.php','tmp/sok.php','tmp/ss.php','tmp/as.php','tmp/dz.php','tmp/r1z.php','tmp/whmcs.php','tmp/root.php','tmp/r00t.php','templates/beez/index.php','templates/beez/beez.php','templates/rhuk_milkyway/index.php','tmp/uploads.php','tmp/upload.php','tmp/sa.php','sa.php','readme.php','tmp/readme.php','wp.zip'.'wp-content/plugins/disqus-comment-system/disqus.php',
 'd0mains.php','wp-content/plugins/akismet/akismet.php','madspotshell.php','info.php','egyshell.php','Sym.php','c22.php','c100.php',
 'wp-content/plugins/akismet/admin.php#','configuration.php','g.php','wp-content/plugins/google-sitemap-generator/sitemap-core.php#',
 'wp-content/plugins/akismet/widget.php#','xx.pl','ls.php','Cpanel.php','k.php','zone-h.php','tmp/user.php','tmp/Sym.php','cp.php',
@@ -366,17 +390,77 @@ if($site !~ /http:\/\//) { $site = "http://$site/"; };
 'wp-content/plugins/akismet/wp.zip',
 'wp-content/plugins/akismet/disqus.php',);
 
-foreach $myshell(@path){
+# Bulunan shell'ler dizisi
+my @found_shells = ();
 
-$url = $site.$myshell;
-$req = HTTP::Request->new(GET=>$url);
-$useragent = LWP::UserAgent->new();
+# Log dosyası
+open my $log_fh, ">", "scan_log.txt" or die "Log dosyası açılamadı: $!";
 
-$response = $useragent->request($req);
+# UserAgent oluştur
+my $ua = LWP::UserAgent->new;
+$ua->timeout($timeout);
+$ua->agent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36");
 
-if ($response->is_success){
-print $c[3]. "\n[ + ] Shell ! Var - $url\n\n";
-}else{
-print $c[2]. "[ - ] Shell Yok - $site$myshell\n";
+# Tarama sayacı ve başlangıç zamanı
+my $total_shells = scalar @path;
+my $current = 0;
+my $start_time = [gettimeofday];
+
+# Shell doğrulama fonksiyonu
+sub is_shell {
+    my ($content) = @_;
+    my @keywords = ('eval', 'system', 'passthru', 'exec', 'shell_exec', 'popen', 'proc_open', 'backdoor', 'shell');
+    foreach my $keyword (@keywords) { return 1 if $content =~ /\b$keyword\b/i; }
+    return 1 if $content =~ /<form[^>]*method=["']?post["']?/i;
+    return 0;
 }
+
+# Tarama döngüsü
+foreach my $myshell (@path) {
+    $current++;
+    my $url = $site . $myshell;
+    printf("\r%s[*] İlerleme: %d/%d (%d%%)%s", $c[6], $current, $total_shells, ($current/$total_shells*100), $c[0]);
+    
+    my $req = HTTP::Request->new(GET => $url);
+    my $req_start_time = [gettimeofday];
+    my $response = $ua->request($req);
+    my $req_elapsed = tv_interval($req_start_time);
+    
+    print $log_fh "URL: $url, Yanıt Kodu: " . $response->code . ", Süre: " . sprintf("%.2f", $req_elapsed) . "s\n";
+    
+    if ($response->is_success) {
+        my $content = $response->decoded_content;
+        if (is_shell($content)) {
+            push @found_shells, $url;
+            print "\r" . $c[4] . "[+] Shell Bulundu: $url" . $c[0] . "\n";
+        }
+    }
+    select(undef, undef, undef, 0.05);
 }
+
+# Taramayı bitir
+my $elapsed = tv_interval($start_time);
+print "\n" . $c[3] . "[*] Tarama tamamlandı. Süre: " . sprintf("%.2f", $elapsed) . " saniye.\n";
+close $log_fh;
+
+# Sonuçları göster
+if (@found_shells) {
+    print $c[4] . "\n[+] Bulunan Shell'ler (" . scalar @found_shells . "):\n";
+    print $c[4] . "=" x 60 . "\n";
+    foreach my $shell (@found_shells) { print $c[4] . "[+] $shell\n"; }
+    print $c[4] . "=" x 60 . "\n";
+    print $c[4] . "[+] Toplam " . scalar @found_shells . " shell bulundu.\n";
+    
+    if ($save_file ne '') {
+        open my $fh, ">", $save_file or die "Dosya açılamadı: $!";
+        print $fh "Hedef: $site\nTarama Tarihi: " . localtime() . "\n" . "=" x 60 . "\n\n";
+        foreach my $shell (@found_shells) { print $fh "$shell\n"; }
+        close $fh;
+        print $c[4] . "[+] Sonuçlar '$save_file' dosyasına kaydedildi.\n";
+    }
+} else {
+    print $c[2] . "\n[-] Hiç shell bulunamadı.\n";
+}
+
+print $c[0];
+exit 0;
