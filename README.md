@@ -1,6 +1,7 @@
 # Shell Scanner
 
-![Shell Scanner Banner](https://github.com/frkndncr/shell-scanner/blob/main/banner.png)
+![Shell Scanner Banner]![resim](https://github.com/user-attachments/assets/b6706f39-f42c-4580-aa4d-b5670521ef9d)
+
 
 ## 🔍 Genel Bakış
 
