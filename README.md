@@ -1,6 +1,7 @@
 # Shell Scanner
 
-![Shell Scanner Banner]![resim](https://github.com/user-attachments/assets/b6706f39-f42c-4580-aa4d-b5670521ef9d)
+![resim](https://github.com/user-attachments/assets/bf559926-ef1f-4484-8146-fddec480b327)
+
 
 
 ## 🔍 Genel Bakış
